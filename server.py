@@ -4,13 +4,13 @@ from sht31d import SHT31D
 from soilsensor import SoilSensor
 
 ##########################################################################################
-# Python Home Bulb Server
+# Python Home Soil Server
 ##########################################################################################
 
 app = Flask(__name__, static_url_path = "")
 
-sht31d = Object()
-soils = Object()
+sht31d = None
+soils = None
 
 try:
     sht31d = SHT31D()
@@ -30,7 +30,7 @@ else:
 
 @app.errorhandler(400)
 def bad_request(error):
-	abort(400)
+    abort(400)
 
 @app.errorhandler(404)
 def not_found(error):
@@ -42,7 +42,7 @@ def getTemp():
 
     if sht31d is not None:
         temp = sht31d.getTemperature()
-    else if soil is not None:
+    elif soil is not None:
         temp = soil.getTemperature()
     else:
         abort(404)

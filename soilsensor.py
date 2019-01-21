@@ -5,7 +5,7 @@ from adafruit_seesaw.seesaw import Seesaw
 
 
 class SoilSensor:
-    def getTemp(self):
+    def getTemperature(self):
         return self.ss.get_temp()
 
     def getMoisture(self):
@@ -16,4 +16,4 @@ class SoilSensor:
 
 if __name__ == "__main__":
     sensor = SoilSensor()
-    print("temp: " + str(sensor.getTemp()) + "  moisture: " + str(sensor.getMoisture()))
+    print("temp: " + str(sensor.getTemperature()) + "  moisture: " + str(sensor.getMoisture()))
