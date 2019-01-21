@@ -17,24 +17,20 @@ try:
 except:
     print("SHT31D not present")
     pass
-else:
-    sht31d = None
 
 try:
     soil = SoilSensor()
 except:
     print("Soil Sensor not present")
     pass
-else:
-    soil = None
 
 @app.errorhandler(400)
-def bad_request(error):
-    abort(400)
+def not_found(error):
+    return make_response(jsonify( { 'error': 'Bad request' } ), 400)
 
 @app.errorhandler(404)
 def not_found(error):
-    abort(404)
+    return make_response(jsonify( { 'error': 'Not found' } ), 404)
 
 @app.route('/temp', methods = ['GET'])
 def getTemp():
@@ -54,14 +50,14 @@ def getHumidity():
     if sht31d is not None:
         return jsonify( {'humidity': sht31d.getHumidity()} )
     else:
-        abort(404)
+        return make_response(jsonify( { 'error': 'Not found' } ), 404)
 
 @app.route('/moisture', methods = ['GET'])
 def getMoisture():
     if soil is not None:
         return jsonify( {'humidity': soil.getMoisture()} )
     else:
-        abort(404)
+        return make_response(jsonify( { 'error': 'Not found' } ), 404)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=6725, debug=False)
