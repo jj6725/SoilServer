@@ -7,11 +7,23 @@ class SHT31D:
     count = 0
     def getTemperature(self):
         self.count += 1 
-        return self.sensor.temperature
+        temperature = 0
+        try:
+            temperature = self.sensor.temperature
+        except:
+            raise("Device error")
+        else:
+            return temperature
 
     def getHumidity(self):
         self.count += 1
-        return self.sensor.relative_humidity
+        humidity = 0
+        try:
+            humidity = self.sensor.relative_humidity
+        except:
+            raise("Device error")
+        else:
+            return humidity
 
     def heat(self):
         if self.count > 10:
@@ -19,6 +31,15 @@ class SHT31D:
             time.sleep(1)
             self.sensor.heater = False
             self.count = 0
+    
+    def getStatus(self):
+        status = 0 
+        try:
+            status = self.sensor.status
+        except:
+            raise("Device error")
+        else:
+            return status
 
     def __init__(self):
         count = 0 
@@ -26,5 +47,6 @@ class SHT31D:
 
 if __name__ == "__main__":
     sensor = SHT31D()
-    print("\nTemperature: %0.1f C" % sensor.getTemperature())
-    print("Humidity: %0.1f %%" % sensor.getHumidity())    
+    print("Status: {0:b}".format(sensor.getStatus()))
+    print("Temperature: {0:0.1f} C".format(sensor.getTemperature()))
+    print("Humidity: {0:0.1f} %%".format(sensor.getHumidity()))
