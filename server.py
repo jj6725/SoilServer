@@ -19,7 +19,7 @@ try:
 except:
     print("SHT31D not present")
     pass
-    
+
 try:
     soil = SoilSensor()
 except:
@@ -38,7 +38,7 @@ def not_found(error):
 def getDevices():
     sht31dStatus = "Offline"
     soilStatus = "Offline"
-    
+
     try:
         sht31d.getStatus()
         sht31dStatus = "OK"
@@ -52,6 +52,13 @@ def getDevices():
         soilStatus ="Offline"
 
     return jsonify({'sht31d': sht31dStatus, 'i2cSoil': soilStatus})
+
+@app.route('/data', methods = ['GET'])
+def getData():
+    try:
+        return jsonify({'temperature': sht31d.getTemperature(),'humidity': sht31d.getHumidity()})
+    except:
+        return offlineError()
 
 @app.route('/temp', methods = ['GET'])
 def getTemp():
