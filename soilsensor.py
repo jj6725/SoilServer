@@ -3,7 +3,6 @@ import busio
 from board import SCL, SDA
 from adafruit_seesaw.seesaw import Seesaw
 
-
 class SoilSensor:
     def getTemperature(self):
         return self.ss.get_temp()

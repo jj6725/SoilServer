@@ -1,0 +1,4 @@
+adafruit-circuitpython-sht31d
+adafruit-circuitpython-seesaw
+flask
+flask-cors
