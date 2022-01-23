@@ -85,4 +85,4 @@ def offlineError():
     return make_response(jsonify( {'error': 'Devices are offline'} ), 500)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=6725, debug=True)
+    app.run(host='0.0.0.0', port=6725, debug=False)
