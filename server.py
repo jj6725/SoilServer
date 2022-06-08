@@ -2,7 +2,7 @@
 from flask import Flask, jsonify, make_response, abort
 from flask_cors import CORS
 from sht31d import SHT31D
-from soilsensor import SoilSensor
+from soilsensor import SensorManager
 
 ##########################################################################################
 # Python Home Soil Server
@@ -21,7 +21,7 @@ except:
     pass
 
 try:
-    soil = SoilSensor()
+    soil = SensorManager()
 except:
     print("Soil Sensor not present")
     pass
@@ -77,7 +77,7 @@ def getHumidity():
 @app.route('/moisture', methods = ['GET'])
 def getMoisture():
     try:
-        return jsonify( {'moisture': soil.getMoisture()} )
+        return jsonify(soil.getMoisture())
     except:
         return offlineError()
 
