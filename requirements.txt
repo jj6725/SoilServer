@@ -1,4 +1,8 @@
-adafruit-circuitpython-sht31d
+adafruit-circuitpython-bme280
+adafruit-circuitpython-pm25
 adafruit-circuitpython-seesaw
+adafruit-circuitpython-sgp40
+adafruit-circuitpython-sht31d
 flask
 flask-cors
+pimoroni-circuitpython-ltr559
