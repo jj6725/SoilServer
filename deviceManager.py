@@ -1,5 +1,9 @@
 import time
-from devices import BME280, SHT31D, LTR559, PM25, SGP40
+from devices.bme280 import BME280
+from devices.ltr559 import LTR559
+from devices.pm25 import PM25
+from devices.sgp40 import SGP40
+from devices.sht31d import SHT31D
 
 
 class DeviceManager:
