@@ -6,11 +6,11 @@ import adafruit_sgp40
 class SGP40:
     name = "SGP40"
 
-    def get_voc_index(temp, humidity, self):
-        return self.sensor.measure_index(temperature=temp, relative_humidity=humidity)
+    def get_voc_index(self, temperature, humidity):
+        return self.sensor.measure_index(temperature=temperature, relative_humidity=humidity)
 
-    def get_compensated_gas(temp, humidity, self):
-        return self.sensor.measure_raw(temperature=temp, relative_humidity=humidity)
+    def get_compensated_gas(self, temperature, humidity):
+        return self.sensor.measure_raw(temperature=temperature, relative_humidity=humidity)
 
     def get_raw_gas(self):
         return self.sensor.raw

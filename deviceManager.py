@@ -31,9 +31,9 @@ class DeviceManager:
             humidity = data["humidity"]
             if temp is not None and humidity is not None:
                 data["voc_index"] = self.gas_sensor.get_voc_index(
-                    temp=temp, humidity=humidity)
+                    temperature=temp, humidity=humidity)
                 data["gas"] = self.gas_sensor.get_compensated_gas(
-                    temp=temp, humidity=humidity)
+                    temperature=temp, humidity=humidity)
 
         if self.pm_sensor is not None:
             aqdata = self.pm_sensor.get_data()
