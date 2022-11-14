@@ -17,34 +17,53 @@ class DeviceManager:
 
         data = {}
         if self.th_sensor is not None:
-            data["temp"] = self.th_sensor.get_temperature()
-            data["humidity"] = self.th_sensor.get_humidity()
+            try:
+                data["temp"] = self.th_sensor.get_temperature()
+                data["humidity"] = self.th_sensor.get_humidity()
+            except:
+                pass
 
         if self.pressure_sensor is not None:
-            data["pressure"] = self.pressure_sensor.get_pressure()
+            try:
+                data["pressure"] = self.pressure_sensor.get_pressure()
+            except:
+                pass
 
         if self.light_sensor is not None:
-            data["lux"] = self.light_sensor.get_lux()
+            try:
+                data["lux"] = self.light_sensor.get_lux()
+            except:
+                pass
 
         if self.gas_sensor is not None:
             temp = data["temp"]
             humidity = data["humidity"]
             if temp is not None and humidity is not None:
-                data["voc_index"] = self.gas_sensor.get_voc_index(
-                    temperature=temp, humidity=humidity)
-                data["gas"] = self.gas_sensor.get_compensated_gas(
-                    temperature=temp, humidity=humidity)
+                try:
+                    data["voc_index"] = self.gas_sensor.get_voc_index(
+                        temperature=temp, humidity=humidity)
+                    data["gas"] = self.gas_sensor.get_compensated_gas(
+                        temperature=temp, humidity=humidity)
+                except:
+                    pass
 
         if self.pm_sensor is not None:
-            aqdata = self.pm_sensor.get_data()
-            data["air_quality"] = {
-                "pm03": aqdata["particles 03um"],
-                "pm05": aqdata["particles 05um"],
-                "pm10": aqdata["particles 10um"],
-                "pm25": aqdata["particles 25um"],
-                "pm50": aqdata["particles 50um"],
-                "pm100": aqdata["particles 100um"]
-            }
+            try:
+                aqdata = self.pm_sensor.get_data()
+                data["air_quality"] = {
+                    "pm03": aqdata["particles 03um"],
+                    "pm05": aqdata["particles 05um"],
+                    "pm10": aqdata["particles 10um"],
+                    "pm25": aqdata["particles 25um"],
+                    "pm50": aqdata["particles 50um"],
+                    "pm100": aqdata["particles 100um"]
+                }
+            except:
+                pass
+
+        # don't update data or last fetch time if nothing was written
+        if data == {}:
+            return data
 
         self.last_fetch = time.time_ns()
         self.data = data
