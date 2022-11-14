@@ -4,6 +4,8 @@ import adafruit_sgp40
 
 
 class SGP40:
+    name = "SGP40"
+
     def get_voc_index(temp, humidity, self):
         return self.sensor.measure_index(temperature=temp, relative_humidity=humidity)
 
@@ -17,12 +19,20 @@ class SGP40:
         print("Gas: %d" % (self.sensor.get_raw_gas()))
 
     def __init__(self):
-        i2c = board.I2C()
-        self.sensor = adafruit_sgp40.SGP40(i2c)
+        try:
+            i2c = board.I2C()
+            self.sensor = adafruit_sgp40.SGP40(i2c)
+        except:
+            raise
 
 
 if __name__ == "__main__":
-    sensor = SGP40()
-    while True:
-        sensor.print()
-        time.sleep(1)
+    try:
+        sensor = SGP40()
+    except:
+        print("%s Unavailable", SGP40.name)
+    else:
+        print("%s Initialized", SGP40.name)
+        while True:
+            sensor.print()
+            time.sleep(1)

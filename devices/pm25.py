@@ -4,7 +4,9 @@ import busio
 from adafruit_pm25.i2c import PM25_I2C
 
 
-class PM300I:
+class PM25:
+    name = "PM25"
+
     def get_data(self):
         return self.sensor.read()
 
@@ -32,18 +34,25 @@ class PM300I:
         print("---------------------------------------")
 
     def __init__(self):
-        i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
-        self.sensor = PM25_I2C(i2c)
-        print("Found sensors, reading data...")
+        try:
+            i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
+            self.sensor = PM25_I2C(i2c)
+        except:
+            raise
 
 
 if __name__ == "__main__":
-    sensor = PM300I()
-    while True:
-        try:
-            data = sensor.get_data()
-            sensor.print(data)
-        except RuntimeError:
-            print("Unable to read from sensor, retrying...")
-            continue
-        time.sleep(1)
+    try:
+        sensor = PM25()
+    except:
+        print("%s Unavailable", PM25.name)
+    else:
+        print("%s Initialized", PM25.name)
+        while True:
+            try:
+                data = sensor.get_data()
+                sensor.print(data)
+            except RuntimeError:
+                print("Unable to read from sensor, retrying...")
+                continue
+            time.sleep(1)

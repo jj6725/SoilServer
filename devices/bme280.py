@@ -4,6 +4,8 @@ from adafruit_bme280 import basic as adafruit_bme280
 
 
 class BME280:
+    name = "BME280"
+
     def get_temperature(self):
         return self.sensor.temperature
 
@@ -25,16 +27,20 @@ class BME280:
 
     def __init__(self):
         try:
-            i2c = board.I2C()  # uses board.SCL and board.SDA
+            i2c = board.I2C()
             self.sensor = adafruit_bme280.Adafruit_BME280_I2C(i2c)
             self.sensor.sea_level_pressure = 1013.25
-        except (RuntimeError):
+        except:
             raise
 
 
 if __name__ == "__main__":
-    sensor = BME280()
-
-    while True:
-        sensor.print()
-        time.sleep(2)
+    try:
+        sensor = BME280()
+    except:
+        print("%s Unavailable", BME280.name)
+    else:
+        print("%s Initialized", BME280.name)
+        while True:
+            sensor.print()
+            time.sleep(2)

@@ -1,11 +1,10 @@
 import time
 import board
-import busio
 import adafruit_sht31d
 
 
 class SHT31D:
-    count = 0
+    name = "SHT31D"
 
     def get_temperature(self):
         self.count += 1
@@ -34,12 +33,20 @@ class SHT31D:
 
     def __init__(self):
         self.count = 0
-        self.sensor = adafruit_sht31d.SHT31D(
-            busio.I2C(board.SCL, board.SDA), address=0x44)
+        try:
+            i2c = board.I2C()
+            self.sensor = adafruit_sht31d.SHT31D(i2c, address=0x44)
+        except:
+            raise
 
 
 if __name__ == "__main__":
-    sensor = SHT31D()
-    while True:
-        sensor.print()
-        time.sleep(1)
+    try:
+        sensor = SHT31D()
+    except:
+        print("%s Unavailable", SHT31D.name)
+    else:
+        print("%s Initialized", SHT31D.name)
+        while True:
+            sensor.print()
+            time.sleep(1)
