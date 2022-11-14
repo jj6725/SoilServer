@@ -88,7 +88,12 @@ class DeviceManager:
     def __init__(self):
         self.data = {}
         self.last_fetch = 0
-        self.find_devices(self)
+        self.th_sensor = None
+        self.pressure_sensor = None
+        self.light_sensor = None
+        self.gas_sensor = None
+        self.pm_sensor = None
+        self.find_devices()
 
 
 if __name__ == "__main__":
@@ -96,7 +101,9 @@ if __name__ == "__main__":
     print(manager.devices)
     count = 0
     while True:
+        count += 1
         if (count > 30):
+            count = 0
             manager.find_devices()
             print("Refinding devices")
             print(manager.devices)

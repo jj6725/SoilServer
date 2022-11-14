@@ -44,9 +44,9 @@ if __name__ == "__main__":
     try:
         sensor = SHT31D()
     except:
-        print("%s Unavailable", SHT31D.name)
+        print(SHT31D.name, " Unavailable")
     else:
-        print("%s Initialized", SHT31D.name)
+        print(SHT31D.name, " Initialized")
         while True:
             sensor.print()
             time.sleep(1)

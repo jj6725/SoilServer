@@ -30,9 +30,9 @@ if __name__ == "__main__":
     try:
         sensor = SGP40()
     except:
-        print("%s Unavailable", SGP40.name)
+        print(SGP40.name, " Unavailable")
     else:
-        print("%s Initialized", SGP40.name)
+        print(SGP40.name, " Initialized")
         while True:
             sensor.print()
             time.sleep(1)

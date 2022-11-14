@@ -45,9 +45,9 @@ if __name__ == "__main__":
     try:
         sensor = PM25()
     except:
-        print("%s Unavailable", PM25.name)
+        print(PM25.name, " Unavailable")
     else:
-        print("%s Initialized", PM25.name)
+        print(PM25.name, " Initialized")
         while True:
             try:
                 data = sensor.get_data()
