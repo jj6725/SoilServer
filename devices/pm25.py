@@ -10,7 +10,8 @@ class PM25:
     def get_data(self):
         return self.sensor.read()
 
-    def print(aqdata):
+    def print(self):
+        aqdata = self.get_data()
         print()
         print("Concentration Units (standard)")
         print("---------------------------------------")
@@ -45,14 +46,9 @@ if __name__ == "__main__":
     try:
         sensor = PM25()
     except:
-        print(PM25.name, " Unavailable")
+        print(PM25.name, "Unavailable")
     else:
-        print(PM25.name, " Initialized")
+        print(PM25.name, "Initialized")
         while True:
-            try:
-                data = sensor.get_data()
-                sensor.print(data)
-            except RuntimeError:
-                print("Unable to read from sensor, retrying...")
-                continue
+            sensor.print()
             time.sleep(1)

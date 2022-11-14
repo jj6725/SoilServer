@@ -24,9 +24,9 @@ if __name__ == "__main__":
     try:
         sensor = LTR559()
     except:
-        print(LTR559.name, " Unavailable")
+        print(LTR559.name, "Unavailable")
     else:
-        print(LTR559.name, " Initialized")
+        print(LTR559.name, "Initialized")
         while True:
             sensor.print()
             time.sleep(1)

@@ -38,9 +38,9 @@ if __name__ == "__main__":
     try:
         sensor = BME280()
     except:
-        print(BME280.name, " Unavailable")
+        print(BME280.name, "Unavailable")
     else:
-        print(BME280.name, " Initialized")
+        print(BME280.name, "Initialized")
         while True:
             sensor.print()
             time.sleep(2)
