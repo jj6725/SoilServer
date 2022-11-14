@@ -36,9 +36,12 @@ class DeviceManager:
                 pass
 
         if self.gas_sensor is not None:
-            temp = data["temp"]
-            humidity = data["humidity"]
-            if temp is not None and humidity is not None:
+            try:
+                temp = data["temp"]
+                humidity = data["humidity"]
+            except:
+                pass
+            else:
                 try:
                     data["voc_index"] = self.gas_sensor.get_voc_index(
                         temperature=temp, humidity=humidity)
