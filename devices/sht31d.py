@@ -27,9 +27,9 @@ class SHT31D:
             self.count = 0
 
     def print(self):
-        print("Status: {0:b}".format(sensor.get_status()))
-        print("Temperature: {0:0.1f} C".format(sensor.get_temperature()))
-        print("Humidity: {0:0.1f} %%".format(sensor.get_humidity()))
+        print("Status: {0:b}".format(self.get_status()))
+        print("Temperature: {0:0.1f} C".format(self.get_temperature()))
+        print("Humidity: {0:0.1f} %%".format(self.get_humidity()))
 
     def __init__(self):
         self.count = 0

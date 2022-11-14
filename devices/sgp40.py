@@ -16,7 +16,7 @@ class SGP40:
         return self.sensor.raw
 
     def print(self):
-        print("Gas: %d" % (self.sensor.get_raw_gas()))
+        print("Gas: %d" % (self.get_raw_gas()))
 
     def __init__(self):
         try:

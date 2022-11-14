@@ -10,7 +10,7 @@ class LTR559:
         return self.sensor.get_lux()
 
     def print(self):
-        print("Lux: {0:0.1f}".format(self.sensor.get_lux()))
+        print("Lux: {0:0.1f}".format(self.get_lux()))
 
     def __init__(self) -> None:
         try:
