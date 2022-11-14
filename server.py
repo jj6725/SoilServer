@@ -21,13 +21,8 @@ def not_found(error):
 
 @app.route('/devices', methods=['GET'])
 def get_devices():
-    return make_response(jsonify(manager.devices))
-
-
-@app.route('/scan', methods=['GET'])
-def scan():
     manager.find_devices()
-    return get_devices()
+    return make_response(jsonify(manager.devices))
 
 
 @app.route('/data', methods=['GET'])
