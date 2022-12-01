@@ -5,4 +5,4 @@ adafruit-circuitpython-sgp40
 adafruit-circuitpython-sht31d
 flask
 flask-cors
-pimoroni-circuitpython-ltr559
+ltr559
