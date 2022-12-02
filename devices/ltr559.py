@@ -1,6 +1,6 @@
 import time
 import board
-from pimoroni_circuitpython_ltr559 import Pimoroni_LTR559
+from ltr559 import LTR559
 
 
 class LTR559:
@@ -15,7 +15,7 @@ class LTR559:
     def __init__(self) -> None:
         try:
             i2c = board.I2C()
-            self.sensor = Pimoroni_LTR559(i2c)
+            self.sensor = ltr559(i2c)
         except:
             raise
 
