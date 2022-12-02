@@ -4,6 +4,7 @@ from devices.ltr559 import LTR559
 from devices.pm25 import PM25
 from devices.sgp40 import SGP40
 from devices.sht31d import SHT31D
+from devices.shtc3 import SHTC3
 
 
 class DeviceManager:
@@ -81,12 +82,22 @@ class DeviceManager:
             self.th_sensor = bme280
             self.pressure_sensor = bme280
         except:
-            try:
-                sht31d = SHT31D()
-                self.devices.append(SHT31D.name)
-                self.th_sensor = sht31d
-            except:
-                pass
+            pass
+        
+        try:
+            sht31d = SHT31D()
+            self.devices.append(SHT31D.name)
+            self.th_sensor = sht31d
+        except:
+            pass
+        
+        try:
+            shtc3 = SHTC3()
+            self.devices.append(SHTC3.name)
+            self.th_sensor = shtc3
+        except:
+            pass
+            
         # lux
         try:
             ltr559 = LTR559()
