@@ -20,15 +20,15 @@ class BME280:
 
     def print(self):
         print()
-        print("Temperature: %0.1f C" % self.sensor.get_temperature())
-        print("Humidity: %0.1f %%" % self.sensor.get_humidity())
-        print("Pressure: %0.1f hPa" % self.sensor.get_pressure())
-        print("Altitude = %0.2f meters" % self.sensor.get_altitude())
+        print("Temperature: %0.1f C" % self.get_temperature())
+        print("Humidity: %0.1f %%" % self.get_humidity())
+        print("Pressure: %0.1f hPa" % self.get_pressure())
+        print("Altitude = %0.2f meters" % self.get_altitude())
 
     def __init__(self):
         try:
             i2c = board.I2C()
-            self.sensor = adafruit_bme280.Adafruit_BME280_I2C(i2c)
+            self.sensor = adafruit_bme280.Adafruit_BME280_I2C(i2c, 0x76)
             self.sensor.sea_level_pressure = 1013.25
         except:
             raise

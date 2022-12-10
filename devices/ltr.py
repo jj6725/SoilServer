@@ -1,12 +1,12 @@
 import time
-import board
 from ltr559 import LTR559
 
 
-class LTR559:
+class LTR:
     name = "LTR559"
 
     def get_lux(self):
+        self.sensor.update_sensor()
         return self.sensor.get_lux()
 
     def print(self):
@@ -14,19 +14,18 @@ class LTR559:
 
     def __init__(self) -> None:
         try:
-            i2c = board.I2C()
-            self.sensor = ltr559(i2c)
+            self.sensor = LTR559()
         except:
             raise
 
 
 if __name__ == "__main__":
     try:
-        sensor = LTR559()
+        sensor = LTR()
     except:
-        print(LTR559.name, "Unavailable")
+        print(LTR.name, "Unavailable")
     else:
-        print(LTR559.name, "Initialized")
+        print(LTR.name, "Initialized")
         while True:
             sensor.print()
             time.sleep(1)
