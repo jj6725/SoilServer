@@ -4,6 +4,7 @@ adafruit-circuitpython-seesaw
 adafruit-circuitpython-sgp40
 adafruit-circuitpython-sht31d
 adafruit-circuitpython-shtc3
+adafruit-circuitpython-scd4x
 flask
 flask-cors
 ltr559

@@ -5,6 +5,7 @@ from devices.pm25 import PM25
 from devices.sgp40 import SGP40
 from devices.sht31d import SHT31D
 from devices.shtc3 import SHTC3
+from devices.scd41 import SCD41
 
 
 class DeviceManager:
@@ -65,6 +66,12 @@ class DeviceManager:
             except:
                 pass
 
+        if self.co2_sensor is not None:
+            try:
+                data["co2"] = self.co2_sensor.get_co2()
+            except:
+                pass
+
         # don't update data or last fetch time if nothing was written
         if data == {}:
             return data
@@ -122,6 +129,14 @@ class DeviceManager:
         except:
             pass
 
+        # CO2
+        try:
+            scd41 = SCD41()
+            self.co2_sensor = scd41
+            self.devices.append(SCD41.name)
+        except:
+            pass
+
     def __init__(self):
         self.data = {}
         self.last_fetch = 0
@@ -130,6 +145,7 @@ class DeviceManager:
         self.light_sensor = None
         self.gas_sensor = None
         self.pm_sensor = None
+        self.co2_sensor = None
         self.find_devices()
 
 
