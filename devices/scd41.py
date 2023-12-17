@@ -14,6 +14,9 @@ class SCD41:
 
     def get_co2(self):
         return self.sensor.CO2
+    
+    def get_is_ready(self):
+        return self.sensor.data_ready
 
     def print(self):
         print("CO2: %d" % (self.get_co2()))
@@ -24,6 +27,13 @@ class SCD41:
         try:
             i2c = board.I2C()
             self.sensor = adafruit_scd4x.SCD4X(i2c)
+            self.sensor.reinit()
+            if self.sensor.self_calibration_enabled:
+                self.sensor.self_calibration_enabled = False
+                self.sensor.altitude = 150
+                self.sensor.persist_settings()
+                print("Saved settings to EEPROM - ASC disabled, altitude set to 150m")
+            self.sensor.start_periodic_measurement()
         except:
             raise
 
@@ -36,6 +46,6 @@ if __name__ == "__main__":
     else:
         print(SCD41.name, "Initialized")
         while True:
-            if sensor.data_ready:
+            if sensor.get_is_ready():
               sensor.print()
             time.sleep(1)
