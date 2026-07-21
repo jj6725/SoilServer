@@ -7,6 +7,9 @@ ExecStart=/usr/bin/python3 /home/pi/soilserver/dashboard.py
 WorkingDirectory=/home/pi/soilserver
 Type=simple
 User=pi
+# Fail loudly rather than silently rendering to a PNG if the panel driver
+# has not come up yet; Restart then retries until the device appears.
+Environment=SOIL_REQUIRE_PANEL=1
 Restart=on-failure
 RestartSec=10
 

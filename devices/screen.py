@@ -230,6 +230,16 @@ def get_screen():
             continue
         else:
             return screen
+
+    # Running under systemd at boot, the panel driver may not have created
+    # its device yet. Falling back to a PNG there would leave the screen dark
+    # with nothing logged and nothing failing, so let the service crash and
+    # be restarted instead of quietly writing files nobody looks at.
+    if os.environ.get("SOIL_REQUIRE_PANEL"):
+        raise RuntimeError(
+            "no panel found and SOIL_REQUIRE_PANEL is set "
+            "(is the SPI overlay loaded? is /dev/fb* present?)"
+        )
     return PngScreen()
 
 
