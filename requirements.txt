@@ -8,3 +8,6 @@ adafruit-circuitpython-scd4x
 flask
 flask-cors
 ltr559
+# dashboard
+pillow
+numpy

@@ -1,4 +1,5 @@
 import time
+from aqi import overall_aqi
 from devices.bme280 import BME280
 from devices.ltr import LTR
 from devices.pm25 import PM25
@@ -56,13 +57,27 @@ class DeviceManager:
             try:
                 aqdata = self.pm_sensor.get_data()
                 data["air_quality"] = {
+                    # Particle counts, per 0.1L of air, for particles larger
+                    # than the named size. NOT concentrations -- these cannot
+                    # be fed to an AQI calculation.
                     "pm03": aqdata["particles 03um"],
                     "pm05": aqdata["particles 05um"],
                     "pm10": aqdata["particles 10um"],
                     "pm25": aqdata["particles 25um"],
                     "pm50": aqdata["particles 50um"],
-                    "pm100": aqdata["particles 100um"]
+                    "pm100": aqdata["particles 100um"],
+                    # Mass concentrations in ug/m3, which is what PM1.0/PM2.5/
+                    # PM10 mean in an air quality reading and what AQI is
+                    # derived from. "env" is the ambient-atmosphere calibration.
+                    #
+                    # Careful: in the Adafruit key names pm100 means PM10.0,
+                    # not PM100. These keys are spelled out to avoid that trap.
+                    "pm1_ugm3": aqdata["pm10 env"],
+                    "pm25_ugm3": aqdata["pm25 env"],
+                    "pm10_ugm3": aqdata["pm100 env"]
                 }
+                data["aqi"] = overall_aqi(
+                    aqdata["pm25 env"], aqdata["pm100 env"])
             except:
                 pass
 
