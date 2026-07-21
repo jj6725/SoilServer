@@ -249,7 +249,12 @@ class Dashboard:
 
         temp = data.get("temp")
         if temp is not None:
-            candidates.append(("TEMP", "%.1f" % temp, "C", "", TEXT_DIM))
+            # Both scales: celsius as the headline, fahrenheit on the
+            # second line of the tile where a status word would go.
+            fahrenheit = temp * 9.0 / 5.0 + 32.0
+            candidates.append(
+                ("TEMP", "%.1f" % temp, "C", "%.1f F" % fahrenheit, TEXT_DIM)
+            )
 
         humidity = data.get("humidity")
         if humidity is not None:
