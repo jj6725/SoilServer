@@ -74,13 +74,40 @@ def font(size, bold=True):
 
 
 def text_size(draw, text, fnt):
-    """Pillow 10 removed font.getsize(); getbbox works on both old and new."""
-    left, top, right, bottom = draw.textbbox((0, 0), text, font=fnt)
-    return right - left, bottom - top
+    """Measure text across Pillow versions.
+
+    draw.textbbox arrived in Pillow 8.0 and font.getsize was removed in
+    Pillow 10, so neither works everywhere. Old Raspberry Pi OS images ship
+    Pillow 5.x from apt, which is the low end this has to cope with.
+    """
+    if hasattr(draw, "textbbox"):
+        left, top, right, bottom = draw.textbbox((0, 0), text, font=fnt)
+        return right - left, bottom - top
+    return fnt.getsize(text)
 
 
 def rounded(draw, box, radius, fill):
-    draw.rounded_rectangle(box, radius=radius, fill=fill)
+    """Rounded rectangle, hand-drawn where Pillow lacks rounded_rectangle.
+
+    ImageDraw.rounded_rectangle only exists from Pillow 8.2.
+    """
+    if hasattr(draw, "rounded_rectangle"):
+        draw.rounded_rectangle(box, radius=radius, fill=fill)
+        return
+
+    x0, y0, x1, y1 = (int(v) for v in box)
+    radius = int(min(radius, (x1 - x0) // 2, (y1 - y0) // 2))
+    if radius <= 0:
+        draw.rectangle((x0, y0, x1, y1), fill=fill)
+        return
+    d = radius * 2
+    # Cross of rectangles, then a quarter circle in each corner.
+    draw.rectangle((x0 + radius, y0, x1 - radius, y1), fill=fill)
+    draw.rectangle((x0, y0 + radius, x1, y1 - radius), fill=fill)
+    draw.pieslice((x0, y0, x0 + d, y0 + d), 180, 270, fill=fill)
+    draw.pieslice((x1 - d, y0, x1, y0 + d), 270, 360, fill=fill)
+    draw.pieslice((x0, y1 - d, x0 + d, y1), 90, 180, fill=fill)
+    draw.pieslice((x1 - d, y1 - d, x1, y1), 0, 90, fill=fill)
 
 
 def meter(draw, box, fraction, colour, track=GRID):
@@ -88,13 +115,13 @@ def meter(draw, box, fraction, colour, track=GRID):
     x0, y0, x1, y1 = box
     height = y1 - y0
     radius = height // 2
-    draw.rounded_rectangle(box, radius=radius, fill=track)
+    rounded(draw, box, radius, track)
     fraction = max(0.0, min(1.0, fraction))
     if fraction <= 0:
         return
     # Keep the filled end at least as wide as the cap so it stays a pill.
     filled = max(height, int((x1 - x0) * fraction))
-    draw.rounded_rectangle((x0, y0, x0 + filled, y1), radius=radius, fill=colour)
+    rounded(draw, (x0, y0, x0 + filled, y1), radius, colour)
 
 
 def sparkline(draw, box, values, colour):
@@ -108,7 +135,11 @@ def sparkline(draw, box, values, colour):
         (x0 + i * step, y1 - (v - lo) / span * (y1 - y0))
         for i, v in enumerate(values)
     ]
-    draw.line(points, fill=colour, width=2, joint="curve")
+    try:
+        draw.line(points, fill=colour, width=2, joint="curve")
+    except TypeError:
+        # joint= predates Pillow 5.3; the line just renders with plain corners.
+        draw.line(points, fill=colour, width=2)
 
 
 class Dashboard:
